@@ -1,21 +1,25 @@
+package giangweb
+
 import (
 	"fmt"
-	"net/http"
-	"os"
-	"strconv"
 
+	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/labstack/echo"
+	"gopkg.in/go-playground/validator.v9"
 )
 
-// start application
-func Start() {
-	port := os.Getenv("GO_WEB_PORT")
-	if port == "" {
-		port = "8080"
-	}
-	e := echo.New()
-	v := validator.New()
+var e = echo.New()
+var v = validator.New()
 
+func init() {
+	err := cleanenv.ReadEnv(&cfg)
+	if err != nil {
+		e.Logger.Fatal("Unable Load Config")
+	}
+}
+
+//Start start application
+func Start() {
 	e.GET("/", showHome)
 	e.GET("/items", indexItems)
 	e.GET("/items/:item_name", showItem)
@@ -26,6 +30,6 @@ func Start() {
 	e.DELETE("/products/:id", deleteProduct)
 	e.GET("/items", indexItems)
 
-	e.Logger.Print("Start from port %s", port)
-	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
+	e.Logger.Print("Start from port %s", cfg.Port)
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", cfg.Port)))
 }

@@ -6,6 +6,6 @@ import (
 	"github.com/labstack/echo"
 )
 
-func getHome(c echo.Context) error {
+func showHome(c echo.Context) error {
 	return c.String(http.StatusOK, "damn good!")
 }
