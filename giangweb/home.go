@@ -1,4 +1,4 @@
-package applications
+package giangweb
 
 import (
 	"net/http"
